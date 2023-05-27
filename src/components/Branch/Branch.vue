@@ -2,7 +2,10 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4><b>MANAGE BRANCH</b></h4>
+        <h4><b>MANAGE BRANCH</b>
+       
+        </h4>
+        
         <hr />
           <div class="row">
               <div class="col-10">
@@ -28,9 +31,11 @@
                       placeholder="Type for Searching..."
                       v-model="query_params.search"
                     />
+                     
                   </div>
                 </div>
               </div>
+              
               <div class="col-2">
                 <div class="col-md-12">
                   <div class="row">
@@ -53,7 +58,20 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+              <div class="col-12">
+
+                <div class="col-12 pl-3 form-group">
+                    <button
+                          class="btn btn-success btn-sm ml-1 "
+                        >
+                          <i class="fa fa-upload"></i> Upload
+                        </button>
+                  </div>
+              </div>
+              </div>
           </div>
+
       </div>
       <div class="card-body">
         <b-table

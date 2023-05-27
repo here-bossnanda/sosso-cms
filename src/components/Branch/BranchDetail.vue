@@ -25,6 +25,24 @@
                     </div>
                 </div>
               </div>
+
+              <div class="col-2 mr-6">
+                <div class="row">
+                    <small class="float-left ml-1 mb-2" for>
+                      <b> Upload:</b>
+                    </small>
+                  </div>
+                  <div class="row">
+                    <div class="form-group mr-6">
+                    <button
+                          class="btn btn-success btn-sm ml-1 "
+                        >
+                          <i class="fa fa-upload"></i> Upload
+                        </button>
+                  </div>
+                  </div>
+
+              </div>
               <div class="col-10">
                 <div class="row">
                     <small class="float-left ml-3 mb-2" for>
@@ -53,15 +71,15 @@
                     </div>
                   </div>
               </div>
-              <div class="col-2">
-                <div class="col-md-12">
+               <div class="col-2">
+                <div class="">
                   <div class="row">
                     <small class="float-left ml-1 mb-2" for>
                       <b> Size:</b>
                     </small>
                   </div>
                   <div class="row">
-                    <div class="col-md-6 pl-2 form-group">
+                    <div class="pl-2 form-group">
                       <select v-model="query_params.size" class="form-control">
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -75,6 +93,7 @@
                   </div>
                 </div>
               </div>
+            
           </div>
       </div>
       <div class="card-body">
