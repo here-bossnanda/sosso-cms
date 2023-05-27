@@ -1,0 +1,7 @@
+body {
+    background: url("https://res.cloudinary.com/swabsumselcpns-com/image/upload/v1632342693/Webp.net-resizeimage_2_f0ab08.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
