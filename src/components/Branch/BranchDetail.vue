@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4><b>DETAIL BRANCH </b></h4>
+        <h4><b>DETAIL BRANCH {{branchName}}</b></h4>
         <hr />
           <div class="row">
              <div class="col-10">
@@ -257,6 +257,11 @@ export default {
       get() {
           return this.$store.state.role;
         },
+    },
+    branchName: {
+      get() {
+        return this.$store.state.branch.branch_info.branch_name
+      }
     },
     branch_code: {
       get() {

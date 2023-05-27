@@ -6,7 +6,14 @@ import './assets/style.css'
 import BootstrapVue from 'bootstrap-vue'
 import VueHtmlToPaper from "vue-html-to-paper";
 
+
+import VueChartkick from "vue-chartkick";
+import "chartkick/chart.js";
+
+
 Vue.use(BootstrapVue)
+Vue.use(VueChartkick);
+
 
 const options = {
     name: "_blank",

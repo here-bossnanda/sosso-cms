@@ -69,7 +69,7 @@
                         </button>
                   </div>
               </div>
-              </div>
+            </div>
           </div>
 
       </div>
@@ -193,7 +193,7 @@ export default {
       if(this.isLoading) {
       swal = Swal.fire({
           title: "Please, waiting...",
-          imageUrl: 'https://raw.githubusercontent.com/gist/T-Jedsada/dbee22959762fa6c0ccad8153830b51a/raw/8957088c2e31dba6d72ce86c615cb3c7bb7f0b0c/nyan-cat.gif',
+          imageUrl: 'https://raw.githubusercontent.com/gist/brudnak/aba00c9a1c92d226f68e8ad8ba1e0a40/raw/e1e4a92f6072d15014f19aa8903d24a1ac0c41a4/nyan-cat.gif',
           imageWidth: 400,
           imageHeight: 200,
           imageAlt: 'Custom image',

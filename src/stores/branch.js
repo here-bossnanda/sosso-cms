@@ -80,7 +80,7 @@ const actions = {
         commit("SET_LOADING", false);
         commit("SET_BRANCH_NAME", false);
         commit("ASSIGN_DATA", response.data);
-        commit("ASSIGN_BRANCH_INFO", response.branch);
+        commit("ASSIGN_BRANCH_INFO", response.data.branch);
       })
       .catch((error) => {
         if (error.response.data.errors === "jwt expired") {
