@@ -5,13 +5,11 @@
         <h4><b>DETAIL BRANCH {{branchName}}</b></h4>
         <hr />
           <div class="row">
-             <div class="col-10">
+             <div class="col-5">
                   <div class="row">
-                    <small class="float-left ml-3 mb-2" for>
+                    <div class="col-md-5 form-group">
+                      <small class="float-left mb-2" for>
                       <b> Filter by Category:</b></small>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-8 form-group">
                       <select
                         v-model="query_params.category"
                         class="form-control"
@@ -23,33 +21,10 @@
                         <option value="Others">Others</option>
                       </select>
                     </div>
-                </div>
-              </div>
 
-              <div class="col-2 mr-6">
-                <div class="row">
-                    <small class="float-left ml-1 mb-2" for>
-                      <b> Upload:</b>
-                    </small>
-                  </div>
-                  <div class="row">
-                    <div class="form-group mr-6">
-                    <button
-                          class="btn btn-success btn-sm ml-1 "
-                        >
-                          <i class="fa fa-upload"></i> Upload
-                        </button>
-                  </div>
-                  </div>
-
-              </div>
-              <div class="col-10">
-                <div class="row">
-                    <small class="float-left ml-3 mb-2" for>
+                    <div class="col-md-5 form-group">
+                       <small class="float-left mb-2" for>
                       <b> Filter by Month:</b></small>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-8 form-group">
                       <select
                         v-model="query_params.month"
                         class="form-control"
@@ -69,17 +44,11 @@
                         <option value="Desember">December</option>
                       </select>
                     </div>
-                  </div>
-              </div>
-               <div class="col-2">
-                <div class="">
-                  <div class="row">
-                    <small class="float-left ml-1 mb-2" for>
-                      <b> Size:</b>
-                    </small>
-                  </div>
-                  <div class="row">
-                    <div class="pl-2 form-group">
+
+                    <div class="col-md-2 form-group">
+                       <small class="float-left mb-2" for>
+                          <b> Size:</b>
+                        </small>
                       <select v-model="query_params.size" class="form-control">
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -90,23 +59,43 @@
                         <option value="100">100</option>
                       </select>
                     </div>
-                  </div>
                 </div>
               </div>
+
+              <!-- <div class="col-5">
+                  <div class="row">
+                    <div class="col-md-5  form-group">
+                       <small class="float-left ml-1 mb-2" for>
+                      <b> Upload:</b>
+                    </small>
+                    <button
+                          class="btn btn-success btn-sm ml-1 "
+                        >
+                          <i class="fa fa-upload"></i> Upload
+                        </button>
+                  </div>
+                  </div>
+
+              </div> -->
             
           </div>
       </div>
       <div class="card-body">
-        <b-table
+         <template v-if="isLoading">
+            <div class="text-center text-danger my-2">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong>Loading...</strong>
+            </div>
+          </template>
+
+        <b-table v-else
           :responsive="true"
           striped
-          bordered
           hover
           :busy.sync="isBusy"
           :items="datas.data"
           :fields="fields"
           show-empty
-          outlined
           :tbody-transition-props="transProps"
         >
           <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
@@ -116,42 +105,62 @@
           {{ scope.label }}
         </div>
       </template>
-          <template v-slot:table-busy>
-            <div class="text-center text-danger my-2">
-              <b-spinner class="align-middle"></b-spinner>
-              <strong>Loading...</strong>
+         
+
+          <template v-slot:cell(branchDetailArea)="row">
+            <div style="width: 12rem">
+             {{row.item ? row.item.branchDetail.area : ''}}
+            </div>
+          </template>
+          <template v-slot:cell(branchDetailPointCheck)="row">
+            <div style="width: 12rem">
+             {{ row.item ? row.item.branchDetail.point_check : '' }}
             </div>
           </template>
 
-          <template v-slot:cell(branchDetail.area)="row">
-            <div style="width: 12rem">
-             {{row.item.branchDetail.area}}
-            </div>
-          </template>
-          <template v-slot:cell(branchDetail.point_check)="row">
-            <div style="width: 12rem">
-             {{row.item.branchDetail.point_check}}
-            </div>
-          </template>
-
-          <template v-slot:cell(branchDetail.list)="row">
+          <template v-slot:cell(branchDetailList)="row">
             <div style="width: 25rem">
-             {{row.item.branchDetail.list}}
+
+             {{ row.item ? row.item.branchDetail.list : '' }}
+            </div>
+          </template>
+
+          <template v-slot:cell(branchDetailCheckList)="row">
+            <div >
+             {{ row.item ? row.item.branchDetail.check_list : '' }}
+            </div>
+          </template>
+
+          <template v-slot:cell(branchDetailCategoryName)="row">
+            <div >
+             {{ row.item ? row.item.branchDetail.category.name : '' }}
+            </div>
+          </template>
+
+          <template v-slot:cell(branchDetailNoPrio)="row">
+            <div >
+             {{ row.item ? row.item.branchDetail.no_prio : '' }}
+            </div>
+          </template>
+
+          <template v-slot:cell(branchDetailScore)="row">
+            <div >
+             {{ row.item ? row.item.branchDetail.score : '' }}
             </div>
           </template>
 
             <template v-slot:cell(status)="row">
-            <div v-if="role == 0">
+            <div v-if="role == 2">
                 <span v-if="row.item.status == 1" class="badge bg-success text-white">Success</span>
                 <span v-else class="badge bg-warning text-white">In Progress</span>
             </div> 
             <div  style="width: 10rem"  v-else>
                <span v-if="row.item.status == 1" class="badge bg-success text-white " style="cursor: pointer;" @click="updateStatus(row.item)">Success</span>
-              <span v-else class="badge bg-warning text-white" @click="updateStatus(row.item)" style="cursor: pointer;">In Progress</span>
+                <span v-else class="badge bg-warning text-white" @click="updateStatus(row.item)" style="cursor: pointer;">In Progress</span>
             </div>
           </template>
           <template v-slot:cell(upload_proof_url)=row>
-                 <div style="width: 25rem" class="form-group" :hidden="role == 0 ? false : true">
+                 <div style="width: 25rem" class="form-group" :hidden="role == 2 ? false : true">
                   <div class="image-preview" v-if="row.item.upload_proof_url.length > 0">
                       <img class="preview" :src="row.item.upload_proof_url">
                   </div>
@@ -208,24 +217,24 @@ import Swal from "sweetalert2";
 
 export default {
   name: "DataBranchDetail",
-  created() {
+  async created() {
     this.$store.commit("branch/SET_PAGE", 1);
     this.$store.commit("branch/SET_SIZE", 5);
     this.$store.commit("branch/SET_LOADING", true);
     this.$store.commit("branch/SET_BRANCH_CODE", this.$route.params.branch_code);
-    this.getBranchDetail();
+    await this.getBranchDetail();
   },
   data() {
     return {
       fields: [
-        { key: "branchDetail.check_list", label: "Check List" },
-        { key: "branchDetail.category.name", label: "Category" },
-        { key: "branchDetail.area", label: "Area" },
-        { key: "branchDetail.point_check", label: "Point Check",  tdClass: 'text-left'},
-        { key: "branchDetail.no_prio", label: "No" },
-        { key: "branchDetail.list", label: "List",  tdClass: 'text-left'},
+        { key: "branchDetailCheckList", label: "Check List" },
+        { key: "branchDetailCategoryName", label: "Category" },
+        { key: "branchDetailArea", label: "Area" },
+        { key: "branchDetailPointCheck", label: "Point Check",  tdClass: 'text-left'},
+        { key: "branchDetailNoPrio", label: "No" },
+        { key: "branchDetailList", label: "List",  tdClass: 'text-left'},
         { key: "month", label: "Month" },
-        { key: "branchDetail.score", label: "Score" },
+        { key: "branchDetailScore", label: "Score" },
         { key: "score", label: "Grade" },
         { key: "upload_proof_url", label: "Evidance" },
         { key: "status", label: "Status" },
@@ -394,7 +403,7 @@ export default {
         "id": item.id,
       }
 
-     Swal.fire({
+    Swal.fire({
         title: "Apakah anda yakin?",
         input: 'select',
         inputOptions: {
@@ -412,7 +421,11 @@ export default {
           this.updateStatusBranchDetailMonthly(payload);
         }
       });
-  }
+    }
+
+    
+
+    
   }
 };
 </script>

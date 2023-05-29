@@ -8,14 +8,11 @@
         
         <hr />
           <div class="row">
-              <div class="col-10">
+              <div class="col-12">
                 <div class="row">
-                  <small class="float-left ml-3 mb-2" for
-                    ><b> Search:</b></small
-                  >
-                </div>
-                <div class="row">
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-2 form-group">
+                    <small class="float-left ml-2 mb-2" for
+                    ><b> Search:</b></small>
                     <select
                       v-model="query_params.typeSearch"
                       class="form-control"
@@ -23,8 +20,10 @@
                       <option value="branch_code">Branch Code</option>
                       <option value="branch_name">Branch Name</option>
                     </select>
-                  </div>
-                  <div class="col-7 pl-2 form-group">
+                  </div>  
+
+                  <div class="col-md-4 mt-1 form-group">
+                    <br/>
                     <input
                       type="text"
                       class="form-control"
@@ -33,68 +32,70 @@
                     />
                      
                   </div>
-                </div>
-              </div>
-              
-              <div class="col-2">
-                <div class="col-md-12">
-                  <div class="row">
-                    <small class="float-left ml-1 mb-2" for>
+
+                  <div class="col-md-4"></div>
+
+                  <div class="col-md-1 pl-2 form-group">
+                      <small class="float-left ml-1 mb-2" for>
                       <b> Size:</b>
                     </small>
+                    <select v-model="query_params.size" class="form-control">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="30">30</option>
+                      <option value="45">45</option>
+                      <option value="75">75</option>
+                      <option value="100">100</option>
+                    </select>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6 pl-2 form-group">
-                      <select v-model="query_params.size" class="form-control">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                        <option value="75">75</option>
-                        <option value="100">100</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-              <div class="col-12">
 
-                <div class="col-12 pl-3 form-group">
+                   
+                </div>
+                <div class="row">
+                  <div class="col-md-1 form-group">
                     <button
-                          class="btn btn-success btn-sm ml-1 "
+                          class="btn btn-success btn-sm"
                         >
                           <i class="fa fa-upload"></i> Upload
                         </button>
                   </div>
+                </div>
               </div>
-            </div>
           </div>
 
       </div>
+
       <div class="card-body">
-        <b-table
-          :responsive="true"
-          striped
-          bordered
-          hover
-          :busy.sync="isBusy"
-          :items="datas.data"
-          :fields="fields"
-          show-empty
-          outlined
-          :tbody-transition-props="transProps"
-        >
-          <template v-slot:table-busy>
+        <template v-if="isLoading" >
             <div class="text-center text-danger my-2">
               <b-spinner class="align-middle"></b-spinner>
               <strong>Loading...</strong>
             </div>
           </template>
+          
+        <b-table v-else
+          :responsive="true"
+          striped
+          hover
+          :busy.sync="isBusy"
+          :items="datas.data"
+          :fields="fields"
+          show-empty
+          :tbody-transition-props="transProps"
+        >
+          
 
            <template #cell(actions)="row">
-                <router-link :to="{ name: 'branch.branch_detail', params: {branch_code: row.item.branch_code,branch_name: row.item.branch_name} }" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></router-link>
+
+            <!-- <router-link :to="`/branch/${row.item ? row.item.branch_code : ''}`" class="btn btn-info btn-sm text-white">
+            <i class="fa fa-eye"></i></router-link> -->
+                <router-link :to="{ 
+                  name: 'branch.branch_detail', 
+                  params: {branch_code: row.item ? row.item.branch_code : ''} 
+                  }" 
+                class="btn btn-info btn-sm text-white"><i class="fa fa-eye"></i>
+                </router-link>
             </template>
         </b-table>
 
@@ -132,9 +133,10 @@ import Swal from "sweetalert2";
 
 export default {
   name: "DataBranch",
-  created() {
+  async created() {
+    this.$store.commit("branch/SIZE", 5);
     this.$store.commit("branch/SET_LOADING", true);
-    this.getbranch();
+    await this.getbranch();
   },
   data() {
     return {

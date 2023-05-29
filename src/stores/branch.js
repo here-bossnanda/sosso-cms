@@ -55,8 +55,8 @@ const actions = {
         `/branch?page=${state.page}&size=${state.size}&type_search=${typeSearch}&search=${search}`
       )
       .then((response) => {
-        commit("SET_LOADING", false);
         commit("ASSIGN_DATA", response.data);
+        commit("SET_LOADING", false);
       })
       .catch((error) => {
         if (error.response.data.errors === "jwt expired") {
@@ -68,6 +68,7 @@ const actions = {
         }
       });
   },
+
   getBranchDetail({ commit, state }, payload) {
     let category_name = typeof payload !== "undefined" ? payload.category : "";
     let month = typeof payload !== "undefined" ? payload.month : "";
@@ -77,10 +78,10 @@ const actions = {
         `/branch/${state.branch_code}?page=${state.page}&size=${state.size}&category_name=${category_name}&month=${month}`
       )
       .then((response) => {
-        commit("SET_LOADING", false);
         commit("SET_BRANCH_NAME", false);
         commit("ASSIGN_DATA", response.data);
         commit("ASSIGN_BRANCH_INFO", response.data.branch);
+        commit("SET_LOADING", false);
       })
       .catch((error) => {
         if (error.response.data.errors === "jwt expired") {
@@ -99,10 +100,10 @@ const actions = {
         `/branch/detail/${state.branch_detail_id}?page=${state.page}&size=${state.size}`
       )
       .then((response) => {
-        commit("SET_LOADING", false);
         commit("SET_BRANCH_NAME", false);
         commit("ASSIGN_DATA", response.data);
         commit("ASSIGN_BRANCH_INFO", response.branch);
+        commit("SET_LOADING", false);
       })
       .catch((error) => {
         if (error.response.data.errors === "jwt expired") {
@@ -117,8 +118,6 @@ const actions = {
 
   updateEvidence({ dispatch }, data) {
     let payload = {};
-
-    console.log(data);
 
     if (data.upload_proof_url != "") {
       payload["upload_proof_url"] = data["upload_proof_url"];
@@ -143,8 +142,8 @@ const actions = {
         Swal.fire("Error!", `${error.response.data.errors}`, "error");
       });
   },
-  updateStatusBranchDetailMonthly({ dispatch }, data) {
 
+  updateStatusBranchDetailMonthly({ dispatch }, data) {
     $axios
       .patch(`/branch/detail/status/${data.id}`, data)
       .then((response) => {
@@ -164,22 +163,30 @@ const actions = {
         Swal.fire("Error!", `${error.response.data.errors}`, "error");
       });
   },
-  // getDashboardData({ commit, state }, payload) {
-  //   $axios
-  //     .get(`/users-registration/dashboard`)
-  //     .then((response) => {
-  //       commit("ASSIGN_DASHBOARD", response.data);
-  //     })
-  //     .catch((error) => {
-  //       if (error.response.data.errors === "jwt expired") {
-  //         localStorage.setItem("token", null);
-  //         localStorage.setItem("role", null);
-  //         commit("SET_TOKEN", null, { root: true });
-  //         commit("SET_ROLE", null, { root: true });
-  //         router.push({ name: "login" });
-  //       }
-  //     });
-  // },
+
+  getChartData({ commit, state }, payload) {
+    let branch = typeof payload !== "undefined" ? payload.branch_code : "";
+    let checkList = typeof payload !== "undefined" ? payload.check_list : "";
+    let month = typeof payload !== "undefined" ? payload.month : "";
+
+    $axios
+      .get(
+        `/branch/dashboard/chart-bar?branch_code=${branch}&check_list=${checkList}&month=${month}`
+      )
+      .then((response) => {
+        commit("ASSIGN_DASHBOARD", response.data);
+        commit("SET_LOADING", false);
+      })
+      .catch((error) => {
+        if (error.response.data.errors === "jwt expired") {
+          localStorage.setItem("token", null);
+          localStorage.setItem("role", null);
+          commit("SET_TOKEN", null, { root: true });
+          commit("SET_ROLE", null, { root: true });
+          router.push({ name: "login" });
+        }
+      });
+  },
 };
 
 export default {

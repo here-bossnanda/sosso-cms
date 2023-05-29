@@ -1,18 +1,15 @@
-import Vue from 'vue'
+import Vue, { createApp } from 'vue';
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/style.css'
-import BootstrapVue from 'bootstrap-vue'
-import VueHtmlToPaper from "vue-html-to-paper";
+import BootstrapVue3 from "bootstrap-vue-3";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue-3/dist/bootstrap-vue-3.css";
 
 
-import VueChartkick from "vue-chartkick";
-import "chartkick/chart.js";
 
-
-Vue.use(BootstrapVue)
-Vue.use(VueChartkick);
 
 
 const options = {
@@ -20,11 +17,8 @@ const options = {
     specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"]
 };
 
-Vue.use(VueHtmlToPaper, options);
-Vue.config.productionTip = false
+const app = createApp(App).use(router).use(store)
+app.use(BootstrapVue3);
 
-new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+
+app.mount('#app')

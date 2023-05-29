@@ -36,50 +36,50 @@ const actions = {
                 }
             });
     },
-    addUser({ dispatch }, payload) {
-        console.log(payload);
-        $axios
-            .post(`/users/register`, payload)
-            .then((response) => {
-                dispatch("getUsers").then(() => {
-                    Swal.fire("Success!", `berhasil menambah user`, "success");
-                    router.push({ name: "user.data" });
-                });
-            })
-            .catch((error) => {
-                if (error.response.data.errors === "jwt expired") {
-                    localStorage.setItem("token", null);
-                    localStorage.setItem("role", null);
-                    commit("SET_TOKEN", null, { root: true });
-                    commit("SET_ROLE", null, { root: true });
-                    router.push({ name: "login" });
-                }
-                Swal.fire("Error!", `${error.response.data.errors}`, "error");
-            });
-    },
+    // addUser({ dispatch }, payload) {
+    //     console.log(payload);
+    //     $axios
+    //         .post(`/users/register`, payload)
+    //         .then((response) => {
+    //             dispatch("getUsers").then(() => {
+    //                 Swal.fire("Success!", `berhasil menambah user`, "success");
+    //                 router.push({ name: "user.data" });
+    //             });
+    //         })
+    //         .catch((error) => {
+    //             if (error.response.data.errors === "jwt expired") {
+    //                 localStorage.setItem("token", null);
+    //                 localStorage.setItem("role", null);
+    //                 commit("SET_TOKEN", null, { root: true });
+    //                 commit("SET_ROLE", null, { root: true });
+    //                 router.push({ name: "login" });
+    //             }
+    //             Swal.fire("Error!", `${error.response.data.errors}`, "error");
+    //         });
+    // },
     editUser({ commit }, payload) {
         return $axios.get(`/users/${payload}`);
     },
-    updateUser({ dispatch }, payload) {
-        $axios
-            .put(`/users/${payload.id}`, payload)
-            .then((response) => {
-                dispatch("getUsers").then(() => {
-                    Swal.fire("Success!", `Successfully updated data`, "success");
-                });
-                router.push({ name: "user.data" });
-            })
-            .catch((error) => {
-                if (error.response.data.errors === "jwt expired") {
-                    localStorage.setItem("token", null);
-                    localStorage.setItem("role", null);
-                    commit("SET_TOKEN", null, { root: true });
-                    commit("SET_ROLE", null, { root: true });
-                    router.push({ name: "login" });
-                }
-                Swal.fire("Error!", `${error.response.data.errors}`, "error");
-            });
-    },
+    // updateUser({ dispatch }, payload) {
+    //     $axios
+    //         .put(`/users/${payload.id}`, payload)
+    //         .then((response) => {
+    //             dispatch("getUsers").then(() => {
+    //                 Swal.fire("Success!", `Successfully updated data`, "success");
+    //             });
+    //             router.push({ name: "user.data" });
+    //         })
+    //         .catch((error) => {
+    //             if (error.response.data.errors === "jwt expired") {
+    //                 localStorage.setItem("token", null);
+    //                 localStorage.setItem("role", null);
+    //                 commit("SET_TOKEN", null, { root: true });
+    //                 commit("SET_ROLE", null, { root: true });
+    //                 router.push({ name: "login" });
+    //             }
+    //             Swal.fire("Error!", `${error.response.data.errors}`, "error");
+    //         });
+    // },
     removeUser({ dispatch, commit }, payload) {
         $axios
             .delete(`/users/${payload}`)
