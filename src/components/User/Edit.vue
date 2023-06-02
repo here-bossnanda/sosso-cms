@@ -2,7 +2,7 @@
     <div class="col-md-12 mt-5">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title"><b>Edit User</b></h5>
+                <h5 class="card-title"><b>EDIT USER</b></h5>
             </div>
             <div class="card-body">
                 <user-form ref="formUser"></user-form>

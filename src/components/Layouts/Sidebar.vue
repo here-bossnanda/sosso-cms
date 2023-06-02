@@ -10,7 +10,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <router-link class="nav-item"  style="text-decoration:none;"  tag="li" :to="{ name: 'home' }" >
+      <router-link class="nav-item"  style="text-decoration:none;"  :to="{ name: 'home' }" >
         <a class="nav-link"   type="button">
           <i class="fas fa-fw fa-home"></i>
           <span >Dashboard</span>
@@ -25,11 +25,19 @@
           Master
       </div>
 
-      <!-- Nav Item - User Registration -->
-      <router-link class="nav-item"   style="text-decoration:none;" tag="li" :to="{ name: 'branch.data' }" >
+      <!-- Nav Item - Branch -->
+      <router-link class="nav-item"   style="text-decoration:none;" :to="{ name: 'branch.data' }" >
         <a class="nav-link"  type="button">
           <i class="fas fa-fw fa-building"></i>
           <span>Branch</span>
+        </a>
+      </router-link>
+
+      <!-- Nav Item - User -->
+      <router-link  class="nav-item" style="text-decoration:none;" :hidden="this.role == 1 ? false : true"  :to="{ name: 'user.data' }" >
+        <a class="nav-link" type="button">
+          <i class="fas fa-fw fa-users"></i>
+          <span>User</span>
         </a>
       </router-link>
 

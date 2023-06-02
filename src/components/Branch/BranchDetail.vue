@@ -61,23 +61,6 @@
                     </div>
                 </div>
               </div>
-
-              <!-- <div class="col-5">
-                  <div class="row">
-                    <div class="col-md-5  form-group">
-                       <small class="float-left ml-1 mb-2" for>
-                      <b> Upload:</b>
-                    </small>
-                    <button
-                          class="btn btn-success btn-sm ml-1 "
-                        >
-                          <i class="fa fa-upload"></i> Upload
-                        </button>
-                  </div>
-                  </div>
-
-              </div> -->
-            
           </div>
       </div>
       <div class="card-body">
@@ -92,94 +75,93 @@
           :responsive="true"
           striped
           hover
-          :busy.sync="isBusy"
           :items="datas.data"
           :fields="fields"
           show-empty
           :tbody-transition-props="transProps"
         >
           <!-- We are using utility class `text-nowrap` to help illustrate horizontal scrolling -->
-     
-      <template #head()="scope">
-        <div class="text-nowrap">
-          {{ scope.label }}
-        </div>
-      </template>
-         
+          <template #head()="scope">
+            <div class="text-nowrap">
+              {{ scope.label }}
+            </div>
+          </template>
 
           <template v-slot:cell(branchDetailArea)="row">
             <div style="width: 12rem">
-             {{row.item ? row.item.branchDetail.area : ''}}
+              {{row.item ? row.item.branchDetail.area : ''}}
             </div>
           </template>
+
           <template v-slot:cell(branchDetailPointCheck)="row">
             <div style="width: 12rem">
-             {{ row.item ? row.item.branchDetail.point_check : '' }}
+              {{ row.item ? row.item.branchDetail.point_check : '' }}
             </div>
           </template>
 
           <template v-slot:cell(branchDetailList)="row">
             <div style="width: 25rem">
-
-             {{ row.item ? row.item.branchDetail.list : '' }}
+              {{ row.item ? row.item.branchDetail.list : '' }}
             </div>
           </template>
 
           <template v-slot:cell(branchDetailCheckList)="row">
             <div >
-             {{ row.item ? row.item.branchDetail.check_list : '' }}
+              {{ row.item ? row.item.branchDetail.check_list : '' }}
             </div>
           </template>
 
           <template v-slot:cell(branchDetailCategoryName)="row">
             <div >
-             {{ row.item ? row.item.branchDetail.category.name : '' }}
+              {{ row.item ? row.item.branchDetail.category.name : '' }}
             </div>
           </template>
 
           <template v-slot:cell(branchDetailNoPrio)="row">
             <div >
-             {{ row.item ? row.item.branchDetail.no_prio : '' }}
+              {{ row.item ? row.item.branchDetail.no_prio : '' }}
             </div>
           </template>
 
-          <template v-slot:cell(branchDetailScore)="row">
-            <div >
-             {{ row.item ? row.item.branchDetail.score : '' }}
-            </div>
-          </template>
-
-            <template v-slot:cell(status)="row">
+          <template v-slot:cell(status)="row">
             <div v-if="role == 2">
                 <span v-if="row.item.status == 1" class="badge bg-success text-white">Success</span>
                 <span v-else class="badge bg-warning text-white">In Progress</span>
             </div> 
             <div  style="width: 10rem"  v-else>
-               <span v-if="row.item.status == 1" class="badge bg-success text-white " style="cursor: pointer;" @click="updateStatus(row.item)">Success</span>
+                <span v-if="row.item.status == 1" class="badge bg-success text-white " style="cursor: pointer;" @click="updateStatus(row.item)">Success</span>
                 <span v-else class="badge bg-warning text-white" @click="updateStatus(row.item)" style="cursor: pointer;">In Progress</span>
             </div>
           </template>
-          <template v-slot:cell(upload_proof_url)=row>
-                 <div style="width: 25rem" class="form-group" :hidden="role == 2 ? false : true">
-                  <div class="image-preview" v-if="row.item.upload_proof_url.length > 0">
-                      <img class="preview" :src="row.item.upload_proof_url">
-                  </div>
-                  <br />
-                  <button
-                    v-if="row.item.score <= 0"
-                    class="btn btn-info btn-sm ml-1"
-                    @click="uploadEvidancev2(row.item)"
-                  >
-                    <i class="fa fa-upload"></i> Upload
-                  </button>
-                </div>
 
-                <div class="form-group" :hidden="role == 1 ? false : true">
-                  <div class="image-preview" v-if="row.item.upload_proof_url.length > 0">
-                      <img class="preview" :src="row.item.upload_proof_url">
-                  </div>
-                  <br />
-                </div>
+          <template v-slot:cell(score)="row">
+            <div  style="width: 10rem">
+              <span v-if="row.item.score <=0" class="badge bg-danger text-white " >X</span>
+              <span v-else class="badge bg-success text-white">V</span>
+            </div>
+          </template>
+
+          <template v-slot:cell(upload_proof_url)=row>
+              <div style="width: 25rem" class="form-group" :hidden="role == 2 ? false : true">
+              <div class="image-preview" v-if="row.item.upload_proof_url.length > 0">
+                  <img class="preview" :src="row.item.upload_proof_url">
+              </div>
+              <br />
+              <button
+                v-if="row.item.score <= 0"
+                class="btn btn-info btn-sm ml-1"
+                @click="uploadEvidancev2(row.item)"
+              >
+                <i class="fa fa-upload"></i> Upload
+              </button>
+            </div>
+
+            <div class="form-group" :hidden="role == 1 ? false : true">
+              <div class="image-preview" v-if="row.item.upload_proof_url.length > 0">
+                  <img class="preview" :src="row.item.upload_proof_url">
+              </div>
+              <br />
+            </div>
           </template>
         </b-table>
 
@@ -234,7 +216,6 @@ export default {
         { key: "branchDetailNoPrio", label: "No" },
         { key: "branchDetailList", label: "List",  tdClass: 'text-left'},
         { key: "month", label: "Month" },
-        { key: "branchDetailScore", label: "Score" },
         { key: "score", label: "Grade" },
         { key: "upload_proof_url", label: "Evidance" },
         { key: "status", label: "Status" },
@@ -244,7 +225,7 @@ export default {
       },
       isBusy: false,
       branch :{
-              upload_proof_url: ""
+          upload_proof_url: ""
       },
       query_params: {
         size: this.$store.state.branch.size,
@@ -338,21 +319,21 @@ export default {
     ]),
 
     previewImage: function(event) {
-        // Reference to the DOM input element
-        var input = event.target;
-        // Ensure that you have a file before attempting to read it
-        if (input.files && input.files[0]) {
-            // create a new FileReader to read this image and convert to base64 format
-            var reader = new FileReader();
-            // Define a callback function to run, when FileReader finishes its job
-            reader.onloadend = (e) => {
-                // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-                // Read image as base64 and set to imageData
-                this.branch.upload_proof_url = e.target.result;
-            }
-            // Start the reader job - read file as a data url (base64 format)
-            reader.readAsDataURL(input.files[0]);
-        }
+      // Reference to the DOM input element
+      var input = event.target;
+      // Ensure that you have a file before attempting to read it
+      if (input.files && input.files[0]) {
+          // create a new FileReader to read this image and convert to base64 format
+          var reader = new FileReader();
+          // Define a callback function to run, when FileReader finishes its job
+          reader.onloadend = (e) => {
+              // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+              // Read image as base64 and set to imageData
+              this.branch.upload_proof_url = e.target.result;
+          }
+          // Start the reader job - read file as a data url (base64 format)
+          reader.readAsDataURL(input.files[0]);
+      }
     },
 
     async uploadEvidancev2(item) {
@@ -392,7 +373,7 @@ export default {
         if (result.isConfirmed) {
           this.updateEvidence(payload);
         }
-      })
+        })
       }
       reader.readAsDataURL(file)
     }
@@ -421,11 +402,68 @@ export default {
           this.updateStatusBranchDetailMonthly(payload);
         }
       });
-    }
+    },
 
-    
+    bulkCreate(){
+      const {value: file}=  Swal.fire({
+        title: 'Select File',
+        input: 'file',
+        inputAttributes: {
+          'accept': '.csv, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+          'aria-label': 'Bulk Create Branch'
+        },
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Upload",
+        showCloseButton: true,
+        showCancelButton: true
+      })
 
-    
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          /* Parse data */
+          const bstr = e.target.result;
+          const wb = read(bstr, { type: 'binary' });
+          /* Get first worksheet */
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          /* Convert array of arrays */
+          const data = utils.sheet_to_json(ws, { header: 1 });
+
+          let bulkData = []
+          for (let index = 1; index < data.length; index++) {
+            const element = data[index];
+            
+            if (element.length <= 0) {
+              continue
+            }
+
+            bulkData.push({
+              "check_list": element[0],
+              "category_id": element[1],
+              "area": element[2],
+              "point_check": element[3],
+              "no_prio": element[4],
+              "list": element[5],
+              "month": element[6],
+              "actual": element[7],
+              "score": element[8],
+              "grade": element[9],
+              "status": element[10],
+              "branch_id": element[11],
+              "branch_detail_id": element[12],
+            })
+          }
+          
+          this.$store.commit("branch/SET_LOADING", true);
+          this.bulkCreateBranch({"branches": bulkData})
+        }
+
+        reader.readAsBinaryString(file);
+      }
+    },
   }
 };
 </script>

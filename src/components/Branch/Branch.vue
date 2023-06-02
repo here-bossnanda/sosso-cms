@@ -3,9 +3,7 @@
     <div class="card">
       <div class="card-header">
         <h4><b>MANAGE BRANCH</b>
-       
         </h4>
-        
         <hr />
           <div class="row">
               <div class="col-12">
@@ -30,7 +28,6 @@
                       placeholder="Type for Searching..."
                       v-model="query_params.search"
                     />
-                     
                   </div>
 
                   <div class="col-md-4"></div>
@@ -50,13 +47,11 @@
                     </select>
                   </div>
 
-                   
                 </div>
                 <div class="row">
                   <div class="col-md-1 form-group">
-                    <button
-                          class="btn btn-success btn-sm"
-                        >
+                    <button @click="bulkCreate()"
+                          class="btn btn-success btn-sm">
                           <i class="fa fa-upload"></i> Upload
                         </button>
                   </div>
@@ -67,29 +62,21 @@
       </div>
 
       <div class="card-body">
-        <template v-if="isLoading" >
-            <div class="text-center text-danger my-2">
-              <b-spinner class="align-middle"></b-spinner>
-              <strong>Loading...</strong>
-            </div>
-          </template>
+          <div v-if="isLoading" class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
           
         <b-table v-else
           :responsive="true"
           striped
           hover
-          :busy.sync="isBusy"
           :items="datas.data"
           :fields="fields"
           show-empty
-          :tbody-transition-props="transProps"
-        >
-          
+          :tbody-transition-props="transProps">
 
-           <template #cell(actions)="row">
-
-            <!-- <router-link :to="`/branch/${row.item ? row.item.branch_code : ''}`" class="btn btn-info btn-sm text-white">
-            <i class="fa fa-eye"></i></router-link> -->
+          <template #cell(actions)="row">
                 <router-link :to="{ 
                   name: 'branch.branch_detail', 
                   params: {branch_code: row.item ? row.item.branch_code : ''} 
@@ -113,8 +100,7 @@
                 :total-rows="datas.total_items"
                 :per-page="datas.total_item_page"
                 aria-controls="datas.data"
-                v-if="datas.data && datas.data.length > 0"
-              >
+                v-if="datas.data && datas.data.length > 0">
               </b-pagination>
             </div>
           </div>
@@ -130,11 +116,13 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import Swal from "sweetalert2";
+import { read, utils } from 'xlsx';
+
 
 export default {
   name: "DataBranch",
   async created() {
-    this.$store.commit("branch/SIZE", 5);
+    this.$store.commit("branch/SET_SIZE", 5);
     this.$store.commit("branch/SET_LOADING", true);
     await this.getbranch();
   },
@@ -154,6 +142,7 @@ export default {
         size: this.$store.state.branch.size,
         typeSearch: "branch_code",
         search: "",
+        forSearchSelect: "",
       },
     };
   },
@@ -219,7 +208,58 @@ export default {
   methods: {
     ...mapActions("branch", [
       "getbranch",
+      "bulkCreateBranch"
     ]),
+
+    async bulkCreate(){
+      const {value: file}= await Swal.fire({
+        title: 'Select File',
+        input: 'file',
+        inputAttributes: {
+          'accept': '.csv, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+          'aria-label': 'Bulk Create Branch'
+        },
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Upload",
+        showCloseButton: true,
+        showCancelButton: true
+      })
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          /* Parse data */
+          const bstr = e.target.result;
+          const wb = read(bstr, { type: 'binary' });
+          /* Get first worksheet */
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          /* Convert array of arrays */
+          const data = utils.sheet_to_json(ws, { header: 1 });
+
+          let bulkData = []
+          for (let index = 1; index < data.length; index++) {
+            const element = data[index];
+            
+            if (element.length <= 0) {
+              continue
+            }
+
+            bulkData.push({
+              "branch_code": element[0],
+              "branch_name": element[1]
+            })
+          }
+          
+          this.$store.commit("branch/SET_LOADING", true);
+          this.bulkCreateBranch({"branches": bulkData})
+        }
+
+        reader.readAsBinaryString(file);
+      }
+    },
   },
 };
 </script>

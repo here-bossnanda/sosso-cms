@@ -9,22 +9,25 @@
   },
   "dependencies": {
     "@canvasjs/vue-charts": "^1.0.1",
+    "@vueform/multiselect": "^2.6.2",
     "axios": "^0.21.1",
     "babel-preset-es2015": "^6.24.1",
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.23.1",
     "bootstrap-vue-3": "^0.5.1",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "firebase": "^9.0.1",
     "moment": "^2.29.1",
     "sweetalert2": "^10.13.0",
+    "usemodal-vue3": "^0.3.7",
     "vue": "^3.0.0-beta.1",
     "vue-chart-3": "^3.1.8",
-    "vue-chartjs": "^5.2.0",
     "vue-chartkick": "^0.6.1",
     "vue-html-to-paper": "^1.4.3",
     "vue-router": "^4.0.13",
-    "vuex": "^4.0.0-alpha.1"
+    "vuex": "^4.0.0-alpha.1",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",

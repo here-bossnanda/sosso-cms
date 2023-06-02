@@ -5,33 +5,37 @@
         <h4><b>MANAGE USER</b></h4>
         <hr>
         <div class="float-left">
-          <router-link :to="{ name: 'user.add' }" class="btn btn-primary btn-flat">Tambah</router-link>
+          <router-link :to="{ name: 'user.add' }" class="btn btn-primary btn-flat"><i class="fa fa-plus"></i> Tambah</router-link>
         </div>
         <div class="float-right">
             <input type="text" class="form-control"  placeholder="Cari..." v-model="search">
         </div>
       </div>
+      
       <div class="card-body">
           <b-table
-            responsive
+            :responsive="true"
             striped
             hover
-            bordered
-            :busy.sync="isBusy"
             :items="datas.data"
             :fields="fields"
             show-empty
-            outlined
             :tbody-transition-props="transProps">
             <template v-slot:table-busy>
-            <div class="text-center text-danger my-2">
-              <b-spinner class="align-middle"></b-spinner>
-              <strong>Loading...</strong>
-            </div>
-          </template>
+              <div class="text-center text-danger my-2">
+                <b-spinner class="align-middle"></b-spinner>
+                <strong>Loading...</strong>
+              </div>
+            </template>
+
             <template v-slot:cell(actions)="row">
                 <router-link :to="{ name: 'user.edit', params: {id: row.item.id} }" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></router-link>
                 <button class="btn btn-danger btn-sm ml-1" @click="deleteUser(row.item.id)"><i class="fa fa-trash"></i></button>
+            </template>
+
+            <template v-slot:cell(role)="row">
+                <span v-if="row.item.role == 1" class="badge bg-success text-white" >Admin</span>
+                <span v-else class="badge bg-warning text-white">User</span>
             </template>
         </b-table>
 
@@ -59,11 +63,12 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import Swal from 'sweetalert2'
+import Multiselect from '@vueform/multiselect'
 
 export default {
   name: 'DataUser',
-  created () {
-    this.getUsers()
+  async created () {
+   await this.getUsers();
   },
   data () {
     return {
@@ -76,8 +81,17 @@ export default {
       transProps: {
         name: 'flip-list'
       },
-      isBusy: false
+      isBusy: false,
+      user: {
+        email: '',
+        password: '',
+        role: 1,
+        branches: []
+      },
     }
+  },
+  components: {
+    Multiselect,
   },
   computed: {
     ...mapState('user', {
@@ -102,6 +116,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['getUsers', 'removeUser']),
+
     deleteUser (id) {
       Swal.fire({
         title: 'Apakah anda yakin?',
@@ -116,7 +131,7 @@ export default {
           this.removeUser(id)
         }
       })
-    }
+    },
   }
 }
 </script>
